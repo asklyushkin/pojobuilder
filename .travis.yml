@@ -1,0 +1,16 @@
+language: java
+jdk: openjdk8
+before_install:
+  - chmod +x prepare-build.sh
+  - ./prepare-build.sh
+script: mvn package
+after_success:
+  - cd /tmp
+  - git clone https://asklyushkin:${GH_TOKEN}@github.com/asklyushkin/pojobuilder pojobuilder
+  - cd pojobuilder
+  - cp $TRAVIS_BUILD_DIR/pojobuilder.jar .
+  - git config --global user.name TravisCI
+  - git config --global user.email noreply@travis-ci.org
+  - git add pojobuilder.jar
+  - git commit -m "[ci skip] Committed by TravisCI"
+  - git push https://asklyushkin:${GH_TOKEN}@github.com/asklyushkin/pojobuilder

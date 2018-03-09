@@ -1,0 +1,29 @@
+<idea-plugin>
+    <id>Pojo Builder</id>
+    <name>Pojo Builder</name>
+    <version>1.0</version>
+    <vendor email="asklyushkin@gmail.com">Aleksandr Kliushkin</vendor>
+
+    <description><![CDATA[
+     Pojo Builder
+    ]]></description>
+
+    <change-notes><![CDATA[
+      09.03.2018 - 1.0.0 - First release <br/>
+    ]]>
+    </change-notes>
+
+    <idea-version since-build="173.0"/>
+
+    <extensions defaultExtensionNs="com.intellij">
+    </extensions>
+
+
+    <actions>
+        <action id="org.idea.plugin.builder" class="org.idea.plugin.BuilderCodeInsightAction" text="Pojo builder"
+                description="pojo builder">
+            <add-to-group group-id="JavaGenerateGroup1" anchor="first"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt b"/>
+        </action>
+    </actions>
+</idea-plugin>
