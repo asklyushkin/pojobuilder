@@ -23,7 +23,7 @@
         <action id="org.idea.plugin.builder" class="org.idea.plugin.BuilderCodeInsightAction" text="Pojo builder"
                 description="pojo builder">
             <add-to-group group-id="JavaGenerateGroup1" anchor="first"/>
-            <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt b"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="shift alt b"/>
         </action>
     </actions>
 </idea-plugin>
