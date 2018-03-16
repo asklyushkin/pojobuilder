@@ -46,7 +46,7 @@ public class BuilderCreator
         final PsiClass builderClass = psiElementFactory.createClass(builderClassName);
         PsiUtil.setModifierProperty(builderClass, PsiModifier.STATIC, true);
         PsiUtil.setModifierProperty(builderClass, PsiModifier.FINAL, true);
-        PsiUtil.setModifierProperty(builderClass, PsiModifier.PRIVATE, true);
+        PsiUtil.setModifierProperty(builderClass, PsiModifier.PUBLIC, true);
 
         for (final PsiFieldMember fieldMember : fields)
         {

@@ -9,6 +9,7 @@
     ]]></description>
 
     <change-notes><![CDATA[
+      16.03.2018 - 1.0.1 - fix builder class private access <br/>
       09.03.2018 - 1.0.0 - First release <br/>
     ]]>
     </change-notes>

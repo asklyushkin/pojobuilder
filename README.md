@@ -5,6 +5,9 @@ PojoBuilder [![Build Status](https://travis-ci.org/asklyushkin/pojobuilder.svg?b
 Умеет расставлять Objects.requireNonNull и аннотации для Jackson'а.
 
 ### Change notes
+#### 16.03.2018 - 1.0.1 - bug fixing 
+* fix builder class private access 
+
 #### 09.03.2018 - 1.0.0 - First release
 **В обычном режиме**
 
