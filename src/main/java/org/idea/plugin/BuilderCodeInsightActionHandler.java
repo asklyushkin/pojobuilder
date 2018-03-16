@@ -82,7 +82,9 @@ public class BuilderCodeInsightActionHandler implements LanguageCodeInsightActio
 
             final BuilderPluginSettings pluginSettings = BuilderPluginSettings.builder()
                     .withDetails(builderDetails)
-                    .withIsJacksonEnabled(propertiesComponent.getBoolean(BuilderOption.IS_JACKSON_ENABLED.getProperty()))
+                    .isJacksonEnabled(propertiesComponent.getBoolean(BuilderOption.IS_JACKSON_ENABLED.getProperty()))
+                    .isRequireNonNullBuilderEnabled(propertiesComponent.getBoolean(BuilderOption.REQUIRE_NON_NULL_IN_BUILDER.getProperty()))
+                    .isRequireNonNullInConstructorEnabled(propertiesComponent.getBoolean(BuilderOption.REQUIRE_NON_NULL_IN_CONSTRUCTOR.getProperty()))
                     .build();
 
             final BuilderPlugin builderPlugin = BuilderPluginFactory.get(pluginSettings, project);

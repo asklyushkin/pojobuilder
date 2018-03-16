@@ -117,14 +117,14 @@ public class BuilderCreator
     private PsiMethod createBuilderBuildMethod(final PsiClass clazz,
                                                final List<PsiFieldMember> fields,
                                                final PsiClass builderClass,
-                                               final boolean isJacksonEnabled)
+                                               final boolean isRequireNonNullEnabled)
     {
         final PsiType clazzType = psiElementFactory.createTypeFromText(requireNonNull(clazz.getName()), null);
         final PsiMethod buildMethod = psiElementFactory.createMethod("build", clazzType);
         buildMethod.getModifierList().setModifierProperty(PsiModifier.PUBLIC, true);
 
 
-        requireNonNull(buildMethod.getBody()).add(getBuildMethodStatement(fields, clazz, builderClass, isJacksonEnabled));
+        requireNonNull(buildMethod.getBody()).add(getBuildMethodStatement(fields, clazz, builderClass, isRequireNonNullEnabled));
 
         return buildMethod;
     }

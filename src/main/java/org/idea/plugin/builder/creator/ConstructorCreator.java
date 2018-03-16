@@ -34,7 +34,8 @@ public class ConstructorCreator
 
     public PsiMethod createConstructor(final PsiClass clazz,
                                        final List<PsiFieldMember> fields,
-                                       final boolean isJacksonEnabled)
+                                       final boolean isJacksonEnabled,
+                                       final boolean isRequireNonNullEnabled)
     {
         final PsiMethod constructor = createEmptyConstructor(clazz, isJacksonEnabled);
 
@@ -43,7 +44,7 @@ public class ConstructorCreator
         {
             final String fieldName = requireNonNull(member.getElement().getName());
 
-            constructorBody.add(createConstructorFieldStatement(fieldName, isJacksonEnabled));
+            constructorBody.add(createConstructorFieldStatement(fieldName, isRequireNonNullEnabled));
 
             final PsiParameter parameter = createConstructorFieldParameter(member, fieldName, isJacksonEnabled);
             constructor.getParameterList().add(parameter);
@@ -71,15 +72,15 @@ public class ConstructorCreator
 
 
     @NotNull
-    private PsiStatement createConstructorFieldStatement(final String fieldName, final boolean isJacksonEnabled)
+    private PsiStatement createConstructorFieldStatement(final String fieldName, final boolean isRequireNonNullEnabled)
     {
-        if (isJacksonEnabled)
+        if (isRequireNonNullEnabled)
         {
-            final String assignText = String.format("this.%1$s = %1$s;", fieldName);
+            final String assignText = String.format("this.%1$s = Objects.requireNonNull(%1$s);", fieldName);
             return psiElementFactory.createStatementFromText(assignText, null);
         }
 
-        final String assignText = String.format("this.%1$s = Objects.requireNonNull(%1$s);", fieldName);
+        final String assignText = String.format("this.%1$s = %1$s;", fieldName);
         return psiElementFactory.createStatementFromText(assignText, null);
     }
 

@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>Pojo Builder</id>
     <name>Pojo Builder</name>
-    <version>1.1</version>
+    <version>1.2</version>
     <vendor email="asklyushkin@gmail.com">Aleksandr Kliushkin</vendor>
 
     <description><![CDATA[
@@ -9,6 +9,7 @@
     ]]></description>
 
     <change-notes><![CDATA[
+      16.03.2018 - 1.2 - add checkboxes for requireNonNull in dialog window <br/>
       16.03.2018 - 1.1 - fix builder class private access <br/>
       09.03.2018 - 1.0 - First release <br/>
     ]]>

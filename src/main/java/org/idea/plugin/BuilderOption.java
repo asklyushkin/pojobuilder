@@ -3,7 +3,9 @@ package org.idea.plugin;
 public enum BuilderOption
 {
 
-    IS_JACKSON_ENABLED("IS_JACKSON_ENABLED");
+    IS_JACKSON_ENABLED("IS_JACKSON_ENABLED"),
+    REQUIRE_NON_NULL_IN_CONSTRUCTOR("REQUIRE_NON_NULL_IN_CONSTRUCTOR"),
+    REQUIRE_NON_NULL_IN_BUILDER("REQUIRE_NON_NULL_IN_BUILDER"),;
 
     private final String property;
 

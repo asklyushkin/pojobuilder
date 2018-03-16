@@ -5,8 +5,7 @@ import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiElementFactory;
 import org.idea.plugin.builder.BuilderManager;
 import org.idea.plugin.configuration.BuilderPluginSettings;
-import org.idea.plugin.implementation.AbstractBuilderPluginClass;
-import org.idea.plugin.implementation.JacksonBuilderPlugin;
+import org.idea.plugin.implementation.DefaultBuilderPlugin;
 
 /**
  * Фабрика имплементация плагинов.
@@ -21,12 +20,6 @@ public class BuilderPluginFactory
         final PsiElementFactory psiElementFactory = JavaPsiFacade.getInstance(project).getElementFactory();
         final BuilderManager builderManager = new BuilderManager(psiElementFactory);
 
-
-        if (settings.isJacksonEnabled())
-        {
-            return new JacksonBuilderPlugin(settings, builderManager);
-        }
-
-        return new AbstractBuilderPluginClass(settings, builderManager);
+        return new DefaultBuilderPlugin(settings, builderManager);
     }
 }

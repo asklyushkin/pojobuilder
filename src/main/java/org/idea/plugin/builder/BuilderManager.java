@@ -43,26 +43,14 @@ public class BuilderManager
 
 
     /**
-     * Генерирует список гетерров для филдов основного класса c анотациями для Jackson'а
-     *
-     * @param fields филды
-     * @return Список геттеров.
-     */
-    public List<PsiMethod> createGettersWithJackson(final List<PsiFieldMember> fields)
-    {
-        return gettersCreator.createGetters(fields, true);
-    }
-
-
-    /**
      * Генерирует список гетерров для филдов основного класса
      *
      * @param fields филды
      * @return Список геттеров.
      */
-    public List<PsiMethod> createGetters(final List<PsiFieldMember> fields)
+    public List<PsiMethod> createGetters(final List<PsiFieldMember> fields, final boolean isJacksonEnabled)
     {
-        return gettersCreator.createGetters(fields, false);
+        return gettersCreator.createGetters(fields, isJacksonEnabled);
     }
 
 
@@ -73,23 +61,14 @@ public class BuilderManager
      * @param fields филды
      * @return конструктор
      */
-    public PsiMethod createConstructor(final PsiClass clazz, final List<PsiFieldMember> fields)
+    public PsiMethod createConstructor(final PsiClass clazz,
+                                       final List<PsiFieldMember> fields,
+                                       boolean isJacksonEnabled,
+                                       boolean isRequireNonNullEnabled)
     {
-        return constructorCreator.createConstructor(clazz, fields, false);
+        return constructorCreator.createConstructor(clazz, fields, isJacksonEnabled, isRequireNonNullEnabled);
     }
 
-
-    /**
-     * Создает конструктор основного класса с JsonProperty над параметрами конструктора и JsonCreator на методом.
-     *
-     * @param clazz  основной класс
-     * @param fields филды
-     * @return конструктор
-     */
-    public PsiMethod createConstructorWithJackson(final PsiClass clazz, final List<PsiFieldMember> fields)
-    {
-        return constructorCreator.createConstructor(clazz, fields, true);
-    }
 
 
     /**
@@ -128,30 +107,11 @@ public class BuilderManager
     public PsiClass createBuilderClass(final List<PsiFieldMember> fields,
                                        final String builderClassName,
                                        final String builderSetterPrefix,
-                                       final PsiClass clazz)
+                                       final PsiClass clazz,
+                                       final boolean isRequireNonNullEnabled)
     {
 
-        return builderCreator.createBuilderClass(fields, builderClassName, builderSetterPrefix, clazz, false);
+        return builderCreator.createBuilderClass(fields, builderClassName, builderSetterPrefix, clazz, isRequireNonNullEnabled);
     }
-
-
-    /**
-     * Создает класс билдера с requireNonNull в методе build
-     *
-     * @param fields              филды
-     * @param builderClassName    имя класса билдера
-     * @param builderSetterPrefix префикс сеттеров
-     * @param clazz               основной клас
-     * @return класс билдера
-     */
-    public PsiClass createBuilderClassWithJackson(final List<PsiFieldMember> fields,
-                                                  final String builderClassName,
-                                                  final String builderSetterPrefix,
-                                                  final PsiClass clazz)
-    {
-
-        return builderCreator.createBuilderClass(fields, builderClassName, builderSetterPrefix, clazz, true);
-    }
-
 
 }
