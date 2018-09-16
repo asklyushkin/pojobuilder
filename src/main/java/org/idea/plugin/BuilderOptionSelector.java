@@ -47,7 +47,7 @@ public final class BuilderOptionSelector
     private static JCheckBox[] buildCheckBoxes(final PropertiesComponent propertiesComponent)
     {
 
-        final JCheckBox[] checkBoxesArray = new JCheckBox[3];
+        final JCheckBox[] checkBoxesArray = new JCheckBox[5];
         checkBoxesArray[0] = buildJacksonCheckbox(propertiesComponent);
         checkBoxesArray[1] = buildRequireNonNullConstructorCheckbox(propertiesComponent);
         checkBoxesArray[2] = buildRequireNonNullBuilderCheckbox(propertiesComponent);
