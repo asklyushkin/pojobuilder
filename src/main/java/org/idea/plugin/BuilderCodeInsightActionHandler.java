@@ -85,10 +85,12 @@ public class BuilderCodeInsightActionHandler implements LanguageCodeInsightActio
                     .isJacksonEnabled(propertiesComponent.getBoolean(BuilderOption.IS_JACKSON_ENABLED.getProperty()))
                     .isRequireNonNullBuilderEnabled(propertiesComponent.getBoolean(BuilderOption.REQUIRE_NON_NULL_IN_BUILDER.getProperty()))
                     .isRequireNonNullInConstructorEnabled(propertiesComponent.getBoolean(BuilderOption.REQUIRE_NON_NULL_IN_CONSTRUCTOR.getProperty()))
+                    .isBuilderEnabled(propertiesComponent.getBoolean(BuilderOption.IS_BUILDER_ENABLED.getProperty()))
+                    .isToStringEnabled(propertiesComponent.getBoolean(BuilderOption.IS_TO_STRING_ENABLED.getProperty()))
                     .build();
 
             final BuilderPlugin builderPlugin = BuilderPluginFactory.get(pluginSettings, project);
-            builderPlugin.process(targetClass, selectedFields);
+            builderPlugin.process(targetClass, selectedFields, project, editor, psiFile);
 
             System.out.println("process ended");
 

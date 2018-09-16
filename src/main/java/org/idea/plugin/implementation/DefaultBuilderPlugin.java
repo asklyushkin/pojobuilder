@@ -3,11 +3,15 @@ package org.idea.plugin.implementation;
 import java.util.List;
 
 import com.intellij.codeInsight.generation.PsiFieldMember;
+import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiMethod;
 import org.idea.plugin.BuilderPlugin;
 import org.idea.plugin.builder.BuilderManager;
 import org.idea.plugin.configuration.BuilderPluginSettings;
+import org.jetbrains.java.generate.GenerateToStringActionHandlerImpl;
 
 import static org.idea.plugin.builder.utils.ClassAdder.addClass;
 import static org.idea.plugin.builder.utils.ClassAdder.addMethod;
@@ -33,7 +37,10 @@ public class DefaultBuilderPlugin implements BuilderPlugin
 
 
     @Override
-    public void process(final PsiClass targetClass, final List<PsiFieldMember> fields)
+    public void process(final PsiClass targetClass,
+                        final List<PsiFieldMember> fields,
+                        final Project project,
+                        final Editor editor, final PsiFile psiFile)
     {
         final Boolean isJacksonEnabled = settings.isJacksonEnabled();
         final Boolean isRequireNonNullInConstructorEnabled = settings.isRequireNonNullInConstructorEnabled();
@@ -45,9 +52,26 @@ public class DefaultBuilderPlugin implements BuilderPlugin
         final List<PsiMethod> getters = builderManager.createGetters(fields, isJacksonEnabled);
         addMethods(targetClass, getters);
 
-        final String builderClassName = settings.getDetails().getBuilderClassName();
-        final String builderMethodName = settings.getDetails().getBuilderMethodName();
+        if (settings.isBuilderEnabled())
+        {
+            final String builderClassName = settings.getDetails().getBuilderClassName();
+            final String builderMethodName = settings.getDetails().getBuilderMethodName();
 
+            createBuilder(targetClass, fields, builderClassName, builderMethodName);
+        }
+
+        if (settings.isToStringEnabled())
+        {
+            final GenerateToStringActionHandlerImpl generateToStringActionHandler = new GenerateToStringActionHandlerImpl();
+            generateToStringActionHandler.invoke(project, editor, psiFile);
+        }
+    }
+
+
+    private void createBuilder(final PsiClass targetClass,
+                               final List<PsiFieldMember> fields,
+                               final String builderClassName, final String builderMethodName)
+    {
         final PsiMethod builderMethod = builderManager.createBuilderMethod(builderClassName, builderMethodName);
         addMethod(targetClass, builderMethod);
 

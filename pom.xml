@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.idea.plugin</groupId>
     <artifactId>pojo-builder</artifactId>
-    <version>1.2</version>
+    <version>1.3</version>
     <packaging>jar</packaging>
     <name>PojoBuilder</name>
 

@@ -1,6 +1,6 @@
 package org.idea.plugin.configuration;
 
-import static java.util.Objects.requireNonNull;
+import java.util.Objects;
 
 /**
  * Настроки для биледра.
@@ -17,28 +17,30 @@ public class BuilderPluginSettings
 
     private final Boolean isRequireNonNullBuilderEnabled;
 
+    private final Boolean isBuilderEnabled;
+
+    private final Boolean isToStringEnabled;
+
 
     private BuilderPluginSettings(final BuilderDetails details,
                                   final Boolean isJacksonEnabled,
                                   final Boolean isRequireNonNullInConstructorEnabled,
-                                  final Boolean isRequireNonNullBuilderEnabled)
+                                  final Boolean isRequireNonNullBuilderEnabled,
+                                  final Boolean isBuilderEnabled,
+                                  final Boolean isToStringEnabled)
     {
-        this.details = requireNonNull(details);
-        this.isJacksonEnabled = requireNonNull(isJacksonEnabled);
-        this.isRequireNonNullInConstructorEnabled = requireNonNull(isRequireNonNullInConstructorEnabled);
-        this.isRequireNonNullBuilderEnabled = requireNonNull(isRequireNonNullBuilderEnabled);
+        this.details = Objects.requireNonNull(details);
+        this.isJacksonEnabled = Objects.requireNonNull(isJacksonEnabled);
+        this.isRequireNonNullInConstructorEnabled = Objects.requireNonNull(isRequireNonNullInConstructorEnabled);
+        this.isRequireNonNullBuilderEnabled = Objects.requireNonNull(isRequireNonNullBuilderEnabled);
+        this.isBuilderEnabled = Objects.requireNonNull(isBuilderEnabled);
+        this.isToStringEnabled = Objects.requireNonNull(isToStringEnabled);
     }
 
 
     public static Builder builder()
     {
         return new Builder();
-    }
-
-
-    public BuilderDetails getDetails()
-    {
-        return details;
     }
 
 
@@ -60,6 +62,24 @@ public class BuilderPluginSettings
     }
 
 
+    public BuilderDetails getDetails()
+    {
+        return details;
+    }
+
+
+    public Boolean isBuilderEnabled()
+    {
+        return isBuilderEnabled;
+    }
+
+
+    public Boolean isToStringEnabled()
+    {
+        return isToStringEnabled;
+    }
+
+
     public static final class Builder
     {
         private BuilderDetails details;
@@ -69,6 +89,10 @@ public class BuilderPluginSettings
         private Boolean isRequireNonNullInConstructorEnabled;
 
         private Boolean isRequireNonNullBuilderEnabled;
+
+        private Boolean isBuilderEnabled;
+
+        private Boolean isToStringEnabled;
 
 
         public Builder withDetails(final BuilderDetails details)
@@ -99,9 +123,29 @@ public class BuilderPluginSettings
         }
 
 
+        public Builder isBuilderEnabled(final Boolean isBuilderEnabled)
+        {
+            this.isBuilderEnabled = isBuilderEnabled;
+            return this;
+        }
+
+
+        public Builder isToStringEnabled(final Boolean isToStringEnabled)
+        {
+            this.isToStringEnabled = isToStringEnabled;
+            return this;
+        }
+
+
         public BuilderPluginSettings build()
         {
-            return new BuilderPluginSettings(details, isJacksonEnabled, isRequireNonNullInConstructorEnabled, isRequireNonNullBuilderEnabled);
+            return new BuilderPluginSettings(
+                    details,
+                    isJacksonEnabled,
+                    isRequireNonNullInConstructorEnabled,
+                    isRequireNonNullBuilderEnabled,
+                    isBuilderEnabled,
+                    isToStringEnabled);
         }
     }
 }

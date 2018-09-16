@@ -51,6 +51,8 @@ public final class BuilderOptionSelector
         checkBoxesArray[0] = buildJacksonCheckbox(propertiesComponent);
         checkBoxesArray[1] = buildRequireNonNullConstructorCheckbox(propertiesComponent);
         checkBoxesArray[2] = buildRequireNonNullBuilderCheckbox(propertiesComponent);
+        checkBoxesArray[3] = buildBuilderCheckbox(propertiesComponent);
+        checkBoxesArray[4] = buildToStringCheckbox(propertiesComponent);
         return checkBoxesArray;
     }
 
@@ -96,6 +98,40 @@ public final class BuilderOptionSelector
         optionCheckBox.setSelected(propertiesComponent.isTrueValue(property));
         optionCheckBox.addItemListener(itemEvent ->
                 propertiesComponent.setValue(property, Boolean.toString(optionCheckBox.isSelected())));
+        return optionCheckBox;
+    }
+
+
+    @NotNull
+    private static JCheckBox buildBuilderCheckbox(final PropertiesComponent propertiesComponent)
+    {
+        final JCheckBox optionCheckBox = new NonFocusableCheckBox("Create builder class");
+        optionCheckBox.setMnemonic('e');
+        optionCheckBox.setToolTipText("Create builder class");
+
+        final String property = BuilderOption.IS_BUILDER_ENABLED.getProperty();
+        optionCheckBox.setSelected(propertiesComponent.isTrueValue(property));
+        optionCheckBox.addItemListener(itemEvent ->
+                                               propertiesComponent.setValue(
+                                                       property,
+                                                       Boolean.toString(optionCheckBox.isSelected())));
+        return optionCheckBox;
+    }
+
+
+    @NotNull
+    private static JCheckBox buildToStringCheckbox(final PropertiesComponent propertiesComponent)
+    {
+        final JCheckBox optionCheckBox = new NonFocusableCheckBox("Add toString method");
+        optionCheckBox.setMnemonic('t');
+        optionCheckBox.setToolTipText("renew or create toString method");
+
+        final String property = BuilderOption.IS_TO_STRING_ENABLED.getProperty();
+        optionCheckBox.setSelected(propertiesComponent.isTrueValue(property));
+        optionCheckBox.addItemListener(itemEvent ->
+                                               propertiesComponent.setValue(
+                                                       property,
+                                                       Boolean.toString(optionCheckBox.isSelected())));
         return optionCheckBox;
     }
 }
