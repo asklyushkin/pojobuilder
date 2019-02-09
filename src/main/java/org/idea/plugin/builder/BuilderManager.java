@@ -63,10 +63,16 @@ public class BuilderManager
      */
     public PsiMethod createConstructor(final PsiClass clazz,
                                        final List<PsiFieldMember> fields,
-                                       boolean isJacksonEnabled,
-                                       boolean isRequireNonNullEnabled)
+                                       final boolean isJacksonEnabled,
+                                       final boolean isRequireNonNullEnabled,
+                                       final boolean isPrivate)
     {
-        return constructorCreator.createConstructor(clazz, fields, isJacksonEnabled, isRequireNonNullEnabled);
+        return constructorCreator.createConstructor(
+                clazz,
+                fields,
+                isJacksonEnabled,
+                isRequireNonNullEnabled,
+                isPrivate);
     }
 
 
