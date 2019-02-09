@@ -1,17 +1,27 @@
 package org.idea.plugin.implementation;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.intellij.codeInsight.generation.PsiFieldMember;
+import com.intellij.codeInsight.hint.HintManager;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiMember;
 import com.intellij.psi.PsiMethod;
 import org.idea.plugin.BuilderPlugin;
 import org.idea.plugin.builder.BuilderManager;
 import org.idea.plugin.configuration.BuilderPluginSettings;
 import org.jetbrains.java.generate.GenerateToStringActionHandlerImpl;
+import org.jetbrains.java.generate.GenerateToStringWorker;
+import org.jetbrains.java.generate.GenerationUtil;
+import org.jetbrains.java.generate.config.ReplacePolicy;
+import org.jetbrains.java.generate.template.TemplateResource;
+import org.jetbrains.java.generate.template.toString.ToStringTemplatesManager;
 
 import static org.idea.plugin.builder.utils.ClassAdder.addClass;
 import static org.idea.plugin.builder.utils.ClassAdder.addMethod;
@@ -40,13 +50,19 @@ public class DefaultBuilderPlugin implements BuilderPlugin
     public void process(final PsiClass targetClass,
                         final List<PsiFieldMember> fields,
                         final Project project,
-                        final Editor editor, final PsiFile psiFile)
+                        final Editor editor,
+                        final PsiFile psiFile)
     {
         final Boolean isJacksonEnabled = settings.isJacksonEnabled();
         final Boolean isRequireNonNullInConstructorEnabled = settings.isRequireNonNullInConstructorEnabled();
 
         final PsiMethod constructor = builderManager.createConstructor(
-                targetClass, fields, isJacksonEnabled, isRequireNonNullInConstructorEnabled);
+                targetClass,
+                fields,
+                isJacksonEnabled,
+                isRequireNonNullInConstructorEnabled,
+                settings.isBuilderEnabled());
+
         addMethod(targetClass, constructor);
 
         final List<PsiMethod> getters = builderManager.createGetters(fields, isJacksonEnabled);
@@ -62,8 +78,36 @@ public class DefaultBuilderPlugin implements BuilderPlugin
 
         if (settings.isToStringEnabled())
         {
-            final GenerateToStringActionHandlerImpl generateToStringActionHandler = new GenerateToStringActionHandlerImpl();
-            generateToStringActionHandler.invoke(project, editor, psiFile);
+//            final GenerateToStringActionHandlerImpl generateToStringActionHandler = new GenerateToStringActionHandlerImpl();
+//            generateToStringActionHandler.invoke(project, editor, psiFile);
+
+
+            final Collection<PsiMember> selectedMembers = GenerationUtil.convertClassMembersToPsiMembers(
+                    Arrays.stream(GenerateToStringActionHandlerImpl.buildMembersToShow(targetClass))
+                            .collect(Collectors.toList()));
+
+            final ToStringTemplatesManager toStringTemplatesManager = new ToStringTemplatesManager();
+            TemplateResource template = toStringTemplatesManager.getDefaultTemplate();
+
+            if (template.isValidTemplate())
+            {
+                final GenerateToStringWorker worker = new GenerateToStringWorker(targetClass, editor, true);
+
+                try
+                {
+                    worker.execute(selectedMembers, template, ReplacePolicy.getInstance());
+                }
+                catch (Exception var11)
+                {
+                    GenerationUtil.handleException(project, var11);
+                }
+            }
+            else
+            {
+                HintManager.getInstance().showErrorHint(
+                        editor,
+                        "toString() template '" + template.getFileName() + "' is invalid");
+            }
         }
     }
 

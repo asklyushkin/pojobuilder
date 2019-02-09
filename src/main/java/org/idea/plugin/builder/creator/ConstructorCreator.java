@@ -35,9 +35,10 @@ public class ConstructorCreator
     public PsiMethod createConstructor(final PsiClass clazz,
                                        final List<PsiFieldMember> fields,
                                        final boolean isJacksonEnabled,
-                                       final boolean isRequireNonNullEnabled)
+                                       final boolean isRequireNonNullEnabled,
+                                       final boolean isPrivate)
     {
-        final PsiMethod constructor = createEmptyConstructor(clazz, isJacksonEnabled);
+        final PsiMethod constructor = createEmptyConstructor(clazz, isJacksonEnabled, isPrivate);
 
         final PsiCodeBlock constructorBody = requireNonNull(constructor.getBody());
         for (final PsiFieldMember member : fields)
@@ -86,10 +87,13 @@ public class ConstructorCreator
 
 
     @NotNull
-    private PsiMethod createEmptyConstructor(final PsiClass clazz, final boolean isJacksonEnabled)
+    private PsiMethod createEmptyConstructor(final PsiClass clazz,
+                                             final boolean isJacksonEnabled,
+                                             final boolean isPrivate)
     {
         final PsiMethod constructor = psiElementFactory.createConstructor(requireNonNull(clazz.getName()));
-        constructor.getModifierList().setModifierProperty(PsiModifier.PRIVATE, true);
+        final String modifier = isPrivate ? PsiModifier.PRIVATE : PsiModifier.PUBLIC;
+        constructor.getModifierList().setModifierProperty(modifier, true);
         if (isJacksonEnabled)
         {
             constructor.getModifierList().addAnnotation(JSON_CREATOR_ANNOTATION);
