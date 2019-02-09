@@ -6,7 +6,7 @@ PojoBuilder [![Build Status](https://travis-ci.org/asklyushkin/pojobuilder.svg?b
 
 ### Change notes
 ### 09.02.2018 - 1.4 - release
-* Отключены окно выбора филдов для toString
+* Отключено окно выбора филдов для toString
 * Если не выбрана генерация билдера, то конструктор генерируется с областью видимости public 
 
 ### 16.09.2018 - 1.3 - release
