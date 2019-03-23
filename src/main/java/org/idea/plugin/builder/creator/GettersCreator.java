@@ -7,6 +7,8 @@ import com.intellij.codeInsight.generation.PsiFieldMember;
 import com.intellij.psi.PsiElementFactory;
 import com.intellij.psi.PsiMethod;
 import com.intellij.psi.PsiStatement;
+import com.intellij.psi.PsiType;
+import org.jetbrains.annotations.NotNull;
 
 import static java.util.Objects.requireNonNull;
 import static org.idea.plugin.builder.jackson.JacksonHelper.createJsonPropertyAnnotation;
@@ -38,7 +40,7 @@ public class GettersCreator
             final String fieldName = requireNonNull(field.getElement().getName());
             System.out.println("Try generate getter for field: " + fieldName);
 
-            final String getterName = "get" + capitalize(fieldName);
+            final String getterName = getGetterName(field);
             final PsiMethod method = psiElementFactory.createMethod(getterName, field.getElement().getType());
             requireNonNull(method.getBody()).add(getGetterStatement(fieldName, method));
 
@@ -52,6 +54,26 @@ public class GettersCreator
         });
 
         return getters;
+    }
+
+
+    @NotNull
+    private String getGetterName(final PsiFieldMember fieldMember)
+    {
+        final String fieldName = fieldMember.getElement().getName();
+
+        if (fieldName.startsWith("is"))
+        {
+            return fieldName;
+        }
+
+        final PsiType fieldType = fieldMember.getElement().getType();
+        if (PsiType.BOOLEAN.equals(fieldType) || fieldType.equalsToText("Boolean"))
+        {
+            return "is" + capitalize(fieldName);
+        }
+
+        return "get" + capitalize(fieldName);
     }
 
 

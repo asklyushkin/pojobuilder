@@ -81,11 +81,12 @@ public class BuilderCreator
 
     private PsiMethod generateBuilderSetter(final PsiType builderType,
                                             final PsiFieldMember member,
-                                            final String builderSetterPrefix)
+                                            final String defaultBuilderSetterPrefix)
     {
 
+        final String prefix = defaultBuilderSetterPrefix;
         final String fieldName = member.getElement().getName();
-        final String methodName = String.format("%s%s", builderSetterPrefix, capitalize(requireNonNull(fieldName)));
+        final String methodName = getBuilderSetterMethodName(prefix, member);
         final PsiMethod setterMethod = psiElementFactory.createMethod(methodName, builderType);
 
         setterMethod.getModifierList().setModifierProperty(PsiModifier.PUBLIC, true);
@@ -98,6 +99,26 @@ public class BuilderCreator
         final PsiCodeBlock setterMethodBody = getSetterBodyStatement(fieldName, setterMethod);
         setterMethodBody.add(psiElementFactory.createStatementFromText("return this;", setterMethod));
         return setterMethod;
+    }
+
+
+    private String getBuilderSetterMethodName(final String prefix, final PsiFieldMember fieldMember)
+    {
+        final String fieldName = fieldMember.getElement().getName();
+
+        if (fieldName.startsWith("is"))
+        {
+            return fieldName;
+        }
+        final PsiType fieldType = fieldMember.getElement().getType();
+
+        if (PsiType.BOOLEAN.equals(fieldType) || fieldType.equalsToText("Boolean"))
+        {
+            return String.format("%s%s", "is", capitalize(fieldName));
+        }
+
+
+        return String.format("%s%s", prefix, capitalize(fieldName));
     }
 
 

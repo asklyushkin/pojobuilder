@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>Pojo Builder</id>
     <name>Pojo Builder</name>
-    <version>1.4</version>
+    <version>1.5</version>
     <vendor email="asklyushkin@gmail.com">Aleksandr Kliushkin</vendor>
 
     <description><![CDATA[
@@ -9,6 +9,7 @@
     ]]></description>
 
     <change-notes><![CDATA[
+      23.03.2018 - 1.5 - use for boolean variables 'is' prefix for getter and builder setter
       09.02.2019 - 1.4 - fix toString dialog. fix bug with constructor modifier<br/>
       16.09.2018 - 1.3 - add toString() generation <br/>
       16.03.2018 - 1.2 - add checkboxes for requireNonNull in dialog window <br/>

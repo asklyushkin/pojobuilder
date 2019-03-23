@@ -5,6 +5,10 @@ PojoBuilder [![Build Status](https://travis-ci.org/asklyushkin/pojobuilder.svg?b
 Умеет расставлять Objects.requireNonNull и аннотации для Jackson'а.
 
 ### Change notes
+
+### 23.03.2019 - 1.5 - release
+* Для boolean переменных getter и builder setter будут иметь префикс 'is'
+
 ### 09.02.2018 - 1.4 - release
 * Отключено окно выбора филдов для toString
 * Если не выбрана генерация билдера, то конструктор генерируется с областью видимости public 
