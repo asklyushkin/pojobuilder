@@ -68,7 +68,7 @@ public class GettersCreator
         }
 
         final PsiType fieldType = fieldMember.getElement().getType();
-        if (PsiType.BOOLEAN.equals(fieldType) || fieldType.equalsToText("Boolean"))
+        if (PsiType.BOOLEAN.equals(fieldType) || fieldType.equalsToText("java.lang.Boolean"))
         {
             return "is" + capitalize(fieldName);
         }
