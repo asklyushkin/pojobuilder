@@ -1,6 +1,7 @@
 package org.idea.plugin.builder.creator;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import com.intellij.codeInsight.generation.PsiFieldMember;
@@ -14,6 +15,7 @@ import com.intellij.psi.PsiParameter;
 import com.intellij.psi.PsiStatement;
 import com.intellij.psi.PsiType;
 import com.intellij.psi.util.PsiUtil;
+import org.idea.plugin.builder.FieldChecker;
 import org.jetbrains.annotations.NotNull;
 
 import static java.util.Objects.requireNonNull;
@@ -104,15 +106,14 @@ public class BuilderCreator
 
     private String getBuilderSetterMethodName(final String prefix, final PsiFieldMember fieldMember)
     {
-        final String fieldName = fieldMember.getElement().getName();
+        final String fieldName = Objects.requireNonNull(fieldMember.getElement().getName());
 
-        if (fieldName.startsWith("is"))
+        if (FieldChecker.hasIsPrefix(fieldName))
         {
             return fieldName;
         }
-        final PsiType fieldType = fieldMember.getElement().getType();
 
-        if (PsiType.BOOLEAN.equals(fieldType) || fieldType.equalsToText("java.lang.Boolean"))
+        if (FieldChecker.isBooleanType(fieldMember))
         {
             return String.format("%s%s", "is", capitalize(fieldName));
         }
