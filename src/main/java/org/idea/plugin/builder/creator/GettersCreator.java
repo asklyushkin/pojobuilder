@@ -2,12 +2,14 @@ package org.idea.plugin.builder.creator;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.regex.Pattern;
 
 import com.intellij.codeInsight.generation.PsiFieldMember;
 import com.intellij.psi.PsiElementFactory;
 import com.intellij.psi.PsiMethod;
 import com.intellij.psi.PsiStatement;
-import com.intellij.psi.PsiType;
+import org.idea.plugin.builder.FieldChecker;
 import org.jetbrains.annotations.NotNull;
 
 import static java.util.Objects.requireNonNull;
@@ -21,6 +23,7 @@ import static org.idea.plugin.builder.utils.BuilderUtils.capitalize;
  **/
 public class GettersCreator
 {
+    private static final Pattern IS_FIELD_PATTERN = Pattern.compile("is([A-Z])+");
 
     private final PsiElementFactory psiElementFactory;
 
@@ -60,15 +63,14 @@ public class GettersCreator
     @NotNull
     private String getGetterName(final PsiFieldMember fieldMember)
     {
-        final String fieldName = fieldMember.getElement().getName();
+        final String fieldName = Objects.requireNonNull(fieldMember.getElement().getName());
 
-        if (fieldName.startsWith("is"))
+        if (FieldChecker.hasIsPrefix(fieldName))
         {
             return fieldName;
         }
 
-        final PsiType fieldType = fieldMember.getElement().getType();
-        if (PsiType.BOOLEAN.equals(fieldType) || fieldType.equalsToText("java.lang.Boolean"))
+        if (FieldChecker.isBooleanType(fieldMember))
         {
             return "is" + capitalize(fieldName);
         }

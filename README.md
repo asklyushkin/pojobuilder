@@ -6,6 +6,9 @@ PojoBuilder [![Build Status](https://travis-ci.org/asklyushkin/pojobuilder.svg?b
 
 ### Change notes
 
+### 30.03.2019 - 1.5.1 - bug fixing
+* Правит генерацию геттеров и сеттеров в билдере для филдов, начинающихся на is
+
 ### 23.03.2019 - 1.5 - release
 * Для boolean переменных getter и builder setter будут иметь префикс 'is'
 
