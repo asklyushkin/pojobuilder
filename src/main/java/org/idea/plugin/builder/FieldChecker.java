@@ -1,7 +1,5 @@
 package org.idea.plugin.builder;
 
-import java.util.regex.Pattern;
-
 import com.intellij.codeInsight.generation.PsiFieldMember;
 import com.intellij.psi.PsiType;
 
@@ -12,8 +10,6 @@ import com.intellij.psi.PsiType;
  **/
 public class FieldChecker
 {
-    private static final Pattern IS_FIELD_PATTERN = Pattern.compile("is([A-Z])+");
-
 
     /**
      * Check that field has prefix 'is' in field name
@@ -25,7 +21,17 @@ public class FieldChecker
      */
     public static boolean hasIsPrefix(final String fieldName)
     {
-        return IS_FIELD_PATTERN.matcher(fieldName).matches();
+        if (!fieldName.startsWith("is"))
+        {
+            return false;
+        }
+
+        final char[] chars = fieldName.substring(2).toCharArray();
+        if (chars.length == 0)
+        {
+            return false;
+        }
+        return Character.isUpperCase(chars[0]);
     }
 
 
